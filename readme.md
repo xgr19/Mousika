@@ -1,5 +1,7 @@
 # Mousika of In-Network Intelligence in IEEE INFOCOM22 
-#### More information about us https://xgr19.github.io  
+**More information about us** https://xgr19.github.io  
+**News**: Our extended draft of the journal version is https://github.com/xgr19/Mousika/tree/Mousikav2
+
 This repository provides part of the code used to run a demo, and all the code will be released after we extend this paper into a journal version.
 
 ## Code Architecture
