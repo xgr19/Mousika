@@ -1,8 +1,9 @@
-# Mousika of In-Network Intelligence in IEEE INFOCOM22 
-**More information about us** https://xgr19.github.io  
-**News**: Our extended draft of the journal version is https://github.com/xgr19/Mousika/tree/Mousikav2
+# Mousika Series of In-Network Intelligence in INFOCOM22 and ToN23
+**More information about us** [https://xgr19.github.io](https://xgr19.github.io)  
 
-This repository provides part of the code used to run a demo, and all the code will be released after we extend this paper into a journal version.
+This repository consists of two branches, the ["main"](https://github.com/xgr19/Mousika/tree/main) branch provides the demo code of generating distilled BDT from RF and then installing it to switches, ["Mousikav2"](https://github.com/xgr19/Mousika/tree/Mousikav2) branch provides the whole distillation codes in the extended ToN version.
+
+We hope that our another In-network intelligence work [Soter](https://github.com/xgr19/Soter) would be also helpful for you.
 
 ## Code Architecture
 
@@ -34,7 +35,7 @@ This repository provides part of the code used to run a demo, and all the code w
 ```
 
 ## Run Decision Trees
-#### (Responsibility of Yutao Dong, dyt20@mails.tsinghua.edu.cn)  
+#### (dyt20@mails.tsinghua.edu.cn)  
 Training the BDT model, this script outputs the results of sdt(BDT with distillation) and bdt(BDT without distillation):
 ```
 python bdt_test.py
@@ -47,7 +48,7 @@ python dt_test.py
 
 ```
 ## Run P4 Program
-#### (Responsibility of Guanglin Duan, imbaplayer@163.com)  
+#### (imbaplayer@163.com)  
 compile P4 code: flowcontrol.p4 under your p4 path of a Barefoot tofino switch
 
 ```
