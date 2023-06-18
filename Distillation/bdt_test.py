@@ -38,7 +38,7 @@ def produce_soft_labels(data, k):
     for train_index, test_index in kf.split(X=data[:, :-1], y=data[:, -1], groups=data[:, -1]):
         train_set, test_set = data[train_index], data[test_index]
         train_X, train_Y, test_X = train_set[:, :-1], train_set[:, -1].astype(int), test_set[:, :-1]
-        clf = RandomForestClassifier(n_estimators=10, max_depth=10, max_features='sqrt', random_state=110)
+        clf = RandomForestClassifier(n_estimators=10, max_depth=10, max_features='sqrt')
         clf.fit(train_X, train_Y)
         pred_prob = clf.predict_proba(test_X)
         soft_label[test_index] += pred_prob
