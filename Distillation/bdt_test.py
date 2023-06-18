@@ -103,16 +103,15 @@ if __name__ == '__main__':
         soft_label = produce_soft_labels(data_train, k=K)
     else:
         soft_label = NN_produce_soft_labels(data_train, k=K, T=T, model=args.teacher, data_name=data_name)
-
-    for i in range(100):
-        print('==========here is sdt==========')
-        clf = SoftTreeClassifier(class_num=class_num, n_features='sqrt', min_sample_leaf=20)
-        clf.fit(data_train[:, :-1], soft_label, feature_attr)
-        pred = clf.predict(data_eval[:, :-1])
-        acc = accuracy(pred, data_eval[:, -1].astype(int))
-        acc_sdt.append(acc)
-        sdt_round = get_c_avg(classification_report(data_eval[:, -1], pred, output_dict=True))
-        sdt_report.append(sdt_round)
-        out_test_metrics(acc_sdt, sdt_report)
-        model_path = './mousika_v2/{}/bdt/{}_{}_sdt.txt'.format(data_name, data_name, args.teacher)
-        clf.show_tree(model_path)
+    
+    print('==========here is sdt==========')
+    clf = SoftTreeClassifier(class_num=class_num, n_features='sqrt', min_sample_leaf=20)
+    clf.fit(data_train[:, :-1], soft_label, feature_attr)
+    pred = clf.predict(data_eval[:, :-1])
+    acc = accuracy(pred, data_eval[:, -1].astype(int))
+    acc_sdt.append(acc)
+    sdt_round = get_c_avg(classification_report(data_eval[:, -1], pred, output_dict=True))
+    sdt_report.append(sdt_round)
+    out_test_metrics(acc_sdt, sdt_report)
+    model_path = './mousika_v2/{}/bdt/{}_{}_sdt.txt'.format(data_name, data_name, args.teacher)
+    clf.show_tree(model_path)
