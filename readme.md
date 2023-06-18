@@ -21,3 +21,4 @@ Training the BDT model, this script outputs the results and rules of SDT (BDT wi
 ```
 python bdt_test.py
 ```
+These rules can be installed in P4 switch through the P4 code in the ["main"](https://github.com/xgr19/Mousika/tree/main) branch.
