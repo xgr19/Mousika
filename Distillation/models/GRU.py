@@ -1,11 +1,8 @@
-import torch
 import torch.nn as nn
-import numpy as np
-from torch.nn.utils.rnn import pack_padded_sequence
 
 
 class GRU(nn.Module):
-    def __init__(self, INPUT_SIZE, output_size, n_layers=2, hidden_dim=5):
+    def __init__(self, INPUT_SIZE, output_size, n_layers=2, hidden_dim=256):
         super(GRU, self).__init__()
         self.n_layers = n_layers
         self.hidden_dim = hidden_dim
@@ -18,4 +15,3 @@ class GRU(nn.Module):
         x = h_n[-1, :, :]
         x = self.classifier(x)
         return x
-
