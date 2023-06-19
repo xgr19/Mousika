@@ -38,7 +38,8 @@ def produce_soft_labels(data, k):
     for train_index, test_index in kf.split(X=data[:, :-1], y=data[:, -1], groups=data[:, -1]):
         train_set, test_set = data[train_index], data[test_index]
         train_X, train_Y, test_X = train_set[:, :-1], train_set[:, -1].astype(int), test_set[:, :-1]
-        clf = RandomForestClassifier(n_estimators=10, max_depth=10, max_features='sqrt')
+        # you can change the sklearn model, e.g., GradientBoostingClassifier(...) for gbdt, MLPClassifier(...) for mlp
+        clf = RandomForestClassifier(n_estimators=10, max_depth=10, max_features='sqrt')  # for rf
         clf.fit(train_X, train_Y)
         pred_prob = clf.predict_proba(test_X)
         soft_label[test_index] += pred_prob
@@ -78,10 +79,9 @@ def NN_produce_soft_labels(data, k, T, model, data_name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PyTorch SDT Training')
-    parser.add_argument('--teacher', default='gru', choices=['rf', 'gru'],
-                        type=str, help='teacher model selection')
-    parser.add_argument(
-        '--cuda', default=0, choices=[0, 1, 2, 3], type=int, help='cuda selection')
+    # you can use different teacher models, e.g., rf, gbdt, mlp, gru and lstm
+    parser.add_argument('--teacher', default='rf', type=str, help='teacher model selection')
+    parser.add_argument('--cuda', default=0, type=int, help='cuda selection')
     args = parser.parse_args()
     torch.cuda.set_device(args.cuda)
     data_name, K, T, class_num = 'univ', 0.75, 1, 2
@@ -99,7 +99,11 @@ if __name__ == '__main__':
     print('label of data_eval:', Counter(data_eval[:, -1]))
 
     acc_sdt, sdt_report, acc_Teacher, teacher_report = [], [], [], []
-    if args.teacher == 'rf':
+    # if you are using sklearn to train teacher models, e.g., rf, gbdt and mlp,
+    # you will need to specify a model in produce_soft_labels().
+    # if you are using gru or lstm as the teacher model,
+    # you will need to modify the model and hyperparameter setting in train_teacher.py.
+    if args.teacher in ['rf', 'gbdt', 'mlp']:
         soft_label = produce_soft_labels(data_train, k=K)
     else:
         soft_label = NN_produce_soft_labels(data_train, k=K, T=T, model=args.teacher, data_name=data_name)
@@ -113,5 +117,5 @@ if __name__ == '__main__':
     sdt_round = get_c_avg(classification_report(data_eval[:, -1], pred, output_dict=True))
     sdt_report.append(sdt_round)
     out_test_metrics(acc_sdt, sdt_report)
-    model_path = './mousika_v2/{}/bdt/{}_{}_sdt.txt'.format(data_name, data_name, args.teacher)
+    model_path = './mousika_v2/{}/{}_{}_sdt.txt'.format(data_name, data_name, args.teacher)
     clf.show_tree(model_path)
