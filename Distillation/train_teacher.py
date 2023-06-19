@@ -4,18 +4,18 @@ import torch.utils.data as Data
 from utils import *
 import torch.nn.functional as F
 
-def select_model(model_name, input_size, output_size):
-    if model_name == 'gru':
-        return GRU(input_size, output_size)
+def select_model(input_size, output_size):
+    return GRU(input_size, output_size)  # for gru
+    # return LSTM(input_size, output_size)  # for lstm
 
 def Train_Teacher(X_train, y_train, X_test, y_test, model_name, data_name):
     input_size, output_size = X_train.shape[1], len(np.unique(y_train))
-    model = select_model(model_name, input_size, output_size)
-
+    model = select_model(input_size, output_size)
     model = model.cuda()
-    BATCH_SIZE = 16
+
+    # hyperparameter setting
+    BATCH_SIZE, LR = 16, 0.001
     EPOCH = 10
-    LR = 0.001
 
     X_train, y_train = torch.tensor(X_train, dtype=torch.float32), torch.tensor(y_train)
     X_test, y_test = torch.tensor(X_test, dtype=torch.float32), torch.tensor(y_test)
