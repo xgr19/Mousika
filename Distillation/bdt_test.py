@@ -86,17 +86,9 @@ if __name__ == '__main__':
     torch.cuda.set_device(args.cuda)
     data_name, K, T, class_num = 'univ', 0.75, 1, 2
 
-    with open('train/dataset/path', 'rb') as tf:
-        data_train = pickle.load(tf)
-    with open('test/dataset/path', 'rb') as tf:
-        data_eval = pickle.load(tf)
-    with open('feature/attribution/path', 'rb') as tf:
-        feature_attr = pickle.load(tf)  # c: continuous, d: discrete
+    data_train, feature_attr = load_data(data_name)
+    data_eval, feature_attr = load_data(data_name + '_test')
     print('training data:', data_name, data_train.shape)
-    print('testing data:', data_name, data_eval.shape)
-    print('feature attr:', feature_attr[0], len(feature_attr))
-    print('label of data_train:', Counter(data_train[:, -1]))
-    print('label of data_eval:', Counter(data_eval[:, -1]))
 
     acc_sdt, sdt_report, acc_Teacher, teacher_report = [], [], [], []
     # if you are using sklearn to train teacher models, e.g., rf, gbdt and mlp,
