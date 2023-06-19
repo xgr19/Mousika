@@ -117,5 +117,5 @@ if __name__ == '__main__':
     sdt_round = get_c_avg(classification_report(data_eval[:, -1], pred, output_dict=True))
     sdt_report.append(sdt_round)
     out_test_metrics(acc_sdt, sdt_report)
-    model_path = './mousika_v2/{}/{}_{}_sdt.txt'.format(data_name, data_name, args.teacher)
+    model_path = './mousika_v2/{}_{}_sdt.txt'.format(data_name, args.teacher)
     clf.show_tree(model_path)
