@@ -10,13 +10,13 @@ We hope that our another In-network intelligence work [Soter](https://github.com
 -- Distillation
   -- train_teacher.py (train the teacher model)
   -- bdt_test.py (an example for distilling the model from the teacher model to BDT)
-  -- SoftTree.py (the class of soft DT, which supports tree distillation)
+  -- SoftTree.py (the class of soft BDT, which supports tree distillation)
   -- utils.py (include some used functions)
   -- models/ (teacher model structures)
   -- mousika_v2/ (rules of BDT)
 ```
 
-## Run Decision Trees
+## Run Binary Decision Trees
 Training the BDT model, this script outputs the results and rules of SDT (BDT with distillation):
 ```
 python bdt_test.py
