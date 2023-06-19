@@ -198,6 +198,73 @@ def k_statistic(labels, r1, r2):
     return (theta1 - theta2) / (1 - theta2)
 
 
+def load_data(data_name):
+    seed = 5
+    feature_number = 112
+
+    features_attr = []
+    if data_name == 'univ':
+        inputName = './Dataset/train.csv'
+        df = pd.read_csv(inputName)
+
+        iot_feature_names = ['srcPort', 'dstPort', 'protocol',
+                             'ip_ihl', 'ip_tos', 'ip_flags', 'ip_ttl', 'tcp_dataofs', 'tcp_flag', 'tcp_window',
+                             'udp_len',
+                             'length',
+                             'srcAddr1', 'srcAddr2', 'srcAddr3', 'srcAddr4', 'dstAddr1', 'dstAddr2', 'dstAddr3',
+                             'dstAddr4']
+        df.drop(columns=iot_feature_names, inplace=True)
+        data = df.values
+        from imblearn.under_sampling import RandomUnderSampler
+
+        rus = RandomUnderSampler(random_state=seed)
+        X, y = rus.fit_resample(data[:, :-1], data[:, -1])
+        data = np.column_stack((X, y))
+        data = np.random.permutation(data)
+        for i in range(data.shape[1] - 1):
+            features_attr.append('d')
+
+    if data_name == 'univ_test':
+        inputName = "./Dataset/test.csv"
+        df = pd.read_csv(inputName)
+
+        iot_feature_names = ['srcPort', 'dstPort', 'protocol',
+                             'ip_ihl', 'ip_tos', 'ip_flags', 'ip_ttl', 'tcp_dataofs', 'tcp_flag', 'tcp_window',
+                             'udp_len',
+                             'length',
+                             'srcAddr1', 'srcAddr2', 'srcAddr3', 'srcAddr4', 'dstAddr1', 'dstAddr2', 'dstAddr3',
+                             'dstAddr4']
+        df.drop(columns=iot_feature_names, inplace=True)
+        data = df.values
+        for i in range(data.shape[1] - 1):
+            features_attr.append('d')
+
+    for i in range(data.shape[1]):
+        if isinstance(data[0, i], str):
+            col = data[:, i]
+            new_col = []
+            for k in range(len(col)):
+                if col[k] is np.nan:
+                    data[k, i] = -1
+                else:
+                    new_col.append(col[k])
+            unique_val = np.unique(new_col)
+            for num in range(len(unique_val)):
+                for k in range(data.shape[0]):
+                    if data[k, i] == unique_val[num]:
+                        data[k, i] = num
+    label = dict(zip(np.unique(data[:, -1]), list(range(len(np.unique(data[:, -1]))))))
+    for i in range(data.shape[0]):
+        data[i][-1] = label[data[i][-1]]
+
+    for i in range(data.shape[0]):
+        for j in range(data.shape[1]):
+            if np.isnan(data[i][j]):
+                data[i][j] = -1.0
+
+    return data, features_attr
+
+
 def get_thres(flowSize, elePercent):
     # param flowSize is DataFrame
     np_flowSize = np.array(flowSize)
