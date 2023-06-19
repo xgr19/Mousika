@@ -14,11 +14,21 @@ We hope that our another In-network intelligence work [Soter](https://github.com
   -- utils.py (include some used functions)
   -- models/ (teacher model structures)
   -- mousika_v2/ (rules of BDT)
+  -- params/ (parameters of the teacher model)
+  -- Dataset/ (save training data and test data)
 ```
 
+## Dataset
+The dataset we use is UNIV, You can download it at [UNIV](https://pages.cs.wisc.edu/~tbenson/IMC10_Data.html).
+
+You need to convert the data features to binary features and then save them in the folder Dataset/ in CSV format.
+
 ## Run Binary Decision Trees
-Training the BDT model, this script outputs the results and rules of SDT (BDT with distillation):
+Training the BDT model, this script outputs the results and rules of soft BDT (BDT with distillation):
 ```
 python bdt_test.py
 ```
-These rules can be installed into Tofino switches through the P4 code in the ["main"](https://github.com/xgr19/Mousika/tree/main) branch.
+
+The rules in folder mousika_v2/ can be installed into Tofino switches through the P4 code in the ["main"](https://github.com/xgr19/Mousika/tree/main) branch.
+
+You can modify the settings in bdt_test.py and train_teacher.py to specify the teacher model that you need.
